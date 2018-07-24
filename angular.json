@@ -55,6 +55,9 @@
           "configurations": {
             "production": {
               "browserTarget": "guess-the-movie:build:production"
+            },
+            "hmr": {
+                "hmr": true,
             }
           }
         },
