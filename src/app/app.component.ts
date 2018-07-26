@@ -9,18 +9,33 @@ import { MovieService } from 'src/app/movie.service';
 export class AppComponent {
   title = 'Guess the movie!';
   movie: any;
+  guessed: boolean;
+  finished: boolean;
   private movies: any;
   private currentIndex: number;
 
   constructor(private movieService: MovieService) {
     this.movieService.getAll().subscribe(movies => {
       this.movies = movies;
-      this.updateCurrentMovie(0);
+      this.updateMovie(0);
     });
   }
 
-  updateCurrentMovie(index = this.currentIndex + 1) {
-    this.movie = this.movies[index];
-    this.currentIndex = index;
+  markAsGuessed() {
+    this.guessed = true;
+  }
+
+  loadNextMovie() {
+    this.updateMovie();
+  }
+
+  private updateMovie(index = this.currentIndex + 1) {
+    if (index === this.movies.length) {
+      this.finished = true;
+    } else {
+      this.guessed = false;
+      this.movie = this.movies[index];
+      this.currentIndex = index;
+    }
   }
 }
