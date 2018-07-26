@@ -27,12 +27,13 @@
     "@nativescript/schematics": "^0.2.2",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
-    "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26",
     "nativescript-angular": "~6.1.0-rc.0",
+    "nativescript-gif": "^4.0.1",
     "nativescript-theme-core": "~1.0.4",
     "reflect-metadata": "~0.1.8",
-    "tns-core-modules": "~4.1.0"
+    "rxjs": "^6.0.0",
+    "tns-core-modules": "~4.1.0",
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",

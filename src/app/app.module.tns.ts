@@ -3,6 +3,12 @@ import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { AppComponent } from './app.component';
 import { CreditsComponent } from './credits/credits.component';
 import { GameComponent } from './game/game.component';
+import { GuessComponent } from './guess/guess.component';
+import { HintComponent } from './hint/hint.component';
+
+import { registerElement } from "nativescript-angular/element-registry";
+import { Gif } from "nativescript-gif";
+registerElement("Gif", () => Gif);
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -20,7 +26,9 @@ import { GameComponent } from './game/game.component';
   declarations: [
     AppComponent,
     CreditsComponent,
-    GameComponent
+    GameComponent,
+    GuessComponent,
+    HintComponent
   ],
   providers: [
   ],
