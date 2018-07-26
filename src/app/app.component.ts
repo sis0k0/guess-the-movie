@@ -1,41 +1,32 @@
 import { Component } from '@angular/core';
 import { MovieService } from 'src/app/movie.service';
 
+import { Movie } from './movie';
+
 @Component({
-  selector: 'app-root',
+  selector: 'gtm-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'Guess the movie!';
-  movie: any;
-  guessed: boolean;
   finished: boolean;
-  private movies: any;
-  private currentIndex: number;
+  movies: Movie[];
 
   constructor(private movieService: MovieService) {
+  }
+
+  ngOnInit() {
+    this.loadMovies();
+  }
+
+  endGame() {
+    this.finished = true;
+  }
+
+  private loadMovies() {
     this.movieService.getAll().subscribe(movies => {
       this.movies = movies;
-      this.updateMovie(0);
     });
-  }
-
-  markAsGuessed() {
-    this.guessed = true;
-  }
-
-  loadNextMovie() {
-    this.updateMovie();
-  }
-
-  private updateMovie(index = this.currentIndex + 1) {
-    if (index === this.movies.length) {
-      this.finished = true;
-    } else {
-      this.guessed = false;
-      this.movie = this.movies[index];
-      this.currentIndex = index;
-    }
   }
 }

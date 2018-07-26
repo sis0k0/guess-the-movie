@@ -10,12 +10,16 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HintComponent } from './hint/hint.component';
 import { GuessComponent } from './guess/guess.component';
+import { CreditsComponent } from './credits/credits.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HintComponent,
     GuessComponent,
+    CreditsComponent,
+    GameComponent,
   ],
   imports: [
     BrowserModule,
