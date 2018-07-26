@@ -126,5 +126,8 @@
       }
     }
   },
-  "defaultProject": "guess-the-movie"
+  "defaultProject": "guess-the-movie",
+  "cli": {
+    "defaultCollection": "@nativescript/schematics"
+  }
 }
