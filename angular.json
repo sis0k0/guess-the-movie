@@ -57,7 +57,7 @@
               "browserTarget": "guess-the-movie:build:production"
             },
             "hmr": {
-                "hmr": true,
+              "hmr": true
             }
           }
         },
