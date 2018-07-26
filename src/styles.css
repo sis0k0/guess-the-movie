@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/purple-green.css";
+/* @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"; */
+
+.center-form {
+  max-width: 500px;
+  margin: auto;
+}
+
+.input-full-width {
+  width: 100%;
+}
+
+.main-container {
+  text-align: center;
+  margin: 60px;
+}
