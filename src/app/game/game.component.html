@@ -1,0 +1,7 @@
+<gtm-hint [movie]="movie"></gtm-hint>
+<gtm-guess [movie]="movie" (guessed)="markAsGuessed()"></gtm-guess>
+
+<div *ngIf="guessed">
+  <h3 class="accent">Great job! The movie is <b>{{ movie.title }}</b>.</h3>
+  <button mat-raised-button (click)="loadNextMovie()" color="accent">Next</button>
+</div>
