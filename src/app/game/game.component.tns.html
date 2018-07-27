@@ -1,12 +1,14 @@
-<gtm-hint [movie]="movie"></gtm-hint>
-<gtm-guess
-  [movie]="movie"
-  [enabled]="guesserEnabled"
-  (valueChanged)="checkIfGuessed($event)"
-></gtm-guess>
+<StackLayout gtmExplode [shouldExplode]="endGame" #game>
+  <gtm-hint [movie]="movie"></gtm-hint>
+  <gtm-guess
+    [movie]="movie"
+    [enabled]="guesserEnabled"
+    (valueChanged)="checkIfGuessed($event)"
+  ></gtm-guess>
 
-<StackLayout *ngIf="guessed">
-  <Label class="text-center" text="Yay! Correct!"></Label>
-  <Label class="text-center text-primary font-weight-bold" [text]="movie.title"></Label>
-  <Button (tap)="loadNextMovie()" class="btn-outline btn-rounded m-15" text="Next"></Button>
+  <StackLayout *ngIf="guessed">
+    <Label class="text-center" text="Yay! Correct!"></Label>
+    <Label class="text-center text-primary font-weight-bold" [text]="movie.title"></Label>
+    <Button (tap)="loadNextMovie()" class="btn-outline btn-rounded m-15" text="Next"></Button>
+  </StackLayout>
 </StackLayout>

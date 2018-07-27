@@ -10,6 +10,7 @@ import { CreditsComponent } from './credits/credits.component';
 import { GameComponent } from './game/game.component';
 import { GuessComponent } from './guess/guess.component';
 import { HintComponent } from './hint/hint.component';
+import { ExplodeDirective } from './explode.directive';
 
 registerElement('Gif', () => Gif);
 
@@ -30,7 +31,8 @@ registerElement('Gif', () => Gif);
     CreditsComponent,
     GameComponent,
     GuessComponent,
-    HintComponent
+    HintComponent,
+    ExplodeDirective,
   ],
   providers: [
   ],
