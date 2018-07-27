@@ -1,5 +1,8 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+
 import { AppComponent } from './app.component';
 import { CreditsComponent } from './credits/credits.component';
 import { GameComponent } from './game/game.component';
@@ -10,9 +13,6 @@ import { registerElement } from "nativescript-angular/element-registry";
 import { Gif } from "nativescript-gif";
 registerElement("Gif", () => Gif);
 
-// Uncomment and add to NgModule imports if you need to use two-way binding
-// import { NativeScriptFormsModule } from "nativescript-angular/forms";
-
 // Uncomment and add to NgModule imports  if you need to use the HTTP wrapper
 // import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 
@@ -22,6 +22,8 @@ registerElement("Gif", () => Gif);
   ],
   imports: [
     NativeScriptModule,
+    NativeScriptFormsModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     AppComponent,

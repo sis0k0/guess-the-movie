@@ -9,9 +9,14 @@ import { Movie } from '../movie';
 export class GameComponent implements OnInit {
   @Input() movies: Movie[];
   @Output() endGame = new EventEmitter();
-  movie: any;
+  movie: Movie;
   guessed: boolean;
+  guesserEnabled = new EventEmitter<boolean>();
   private currentIndex: number;
+
+  private static sanitize(text: string) {
+    return text.replace(/[^\w]/gi, '').toLowerCase();
+  }
 
   constructor() { }
 
@@ -19,8 +24,13 @@ export class GameComponent implements OnInit {
     this.loadFirstMovie();
   }
 
-  markAsGuessed() {
-    this.guessed = true;
+  checkIfGuessed(value: string) {
+    const actual = GameComponent.sanitize(value);
+    const expected = GameComponent.sanitize(this.movie.title);
+
+    if (actual === expected) {
+      this.updateGuessed(true);
+    }
   }
 
   loadNextMovie() {
@@ -32,12 +42,20 @@ export class GameComponent implements OnInit {
   }
 
   private updateMovie(index = this.currentIndex + 1) {
+    this.updateGuessed(false);
+
     if (index === this.movies.length) {
       this.endGame.emit();
     } else {
-      this.guessed = false;
       this.movie = this.movies[index];
       this.currentIndex = index;
     }
+  }
+
+  private updateGuessed(isGuessed: boolean) {
+    this.guessed = isGuessed;
+
+    const gameActive = !isGuessed;
+    this.guesserEnabled.emit(gameActive);
   }
 }

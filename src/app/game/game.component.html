@@ -1,5 +1,9 @@
 <gtm-hint [movie]="movie"></gtm-hint>
-<gtm-guess [movie]="movie" (guessed)="markAsGuessed()"></gtm-guess>
+<gtm-guess
+  [movie]="movie"
+  [enabled]="guesserEnabled"
+  (valueChanged)="checkIfGuessed($event)"
+></gtm-guess>
 
 <div *ngIf="guessed">
   <h3 class="accent">Great job! The movie is <b>{{ movie.title }}</b>.</h3>

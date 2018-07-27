@@ -11,26 +11,31 @@ import { Movie } from '../movie';
 export class GuessComponent implements OnInit {
   movieControl: FormControl;
   @Input() movie: Movie;
-  @Output() guessed = new EventEmitter<boolean>();
-
-  private static sanitize(text: string) {
-    return text.replace(/[^\w]/gi, '').toLowerCase();
-  }
+  @Input() enabled: EventEmitter<boolean>;
+  @Output() valueChanged: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
     this.movieControl = new FormControl();
     this.movieControl.valueChanges.subscribe(value => {
-      const actual = GuessComponent.sanitize(value);
-      const expected = GuessComponent.sanitize(this.movie.title);
-
-      if (actual === expected) {
-        this.guessed.emit(true);
-        this.movieControl.setValue('');
-        // this.movieControl.disable();
-      }
+      this.valueChanged.emit(value);
     });
+
+    this.enabled.subscribe(isEnabled => isEnabled ? this.enable() : this.disable());
   }
 
+  private enable() {
+    this.reset();
+    this.movieControl.enable();
+  }
+
+  private disable() {
+    this.reset();
+    this.movieControl.disable();
+  }
+
+  private reset() {
+    this.movieControl.setValue('');
+  }
 }
