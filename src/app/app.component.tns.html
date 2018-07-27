@@ -1,9 +1,11 @@
 <ActionBar [title]="title"></ActionBar>
 
-<ng-template #game>
-  <gtm-game [movies]="movies" (endGame)="endGame()"></gtm-game>
-</ng-template>
+<StackLayout class="page m-15">
+  <ng-template #game>
+    <gtm-game [movies]="movies" (endGame)="endGame()"></gtm-game>
+  </ng-template>
 
-<StackLayout *ngIf="finished; else game">
-  <gtm-credits></gtm-credits>
+  <StackLayout *ngIf="finished; else game">
+    <gtm-credits></gtm-credits>
+  </StackLayout>
 </StackLayout>
