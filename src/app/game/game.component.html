@@ -1,7 +1,7 @@
 <gtm-hint [movie]="movie"></gtm-hint>
 <gtm-guess
   [movie]="movie"
-  [enabled]="guesserEnabled"
+  [enabled]="!guessed"
   (valueChanged)="checkIfGuessed($event)"
 ></gtm-guess>
 

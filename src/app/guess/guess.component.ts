@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { Movie } from '../movie';
@@ -8,10 +8,10 @@ import { Movie } from '../movie';
   templateUrl: './guess.component.html',
   styleUrls: ['./guess.component.css']
 })
-export class GuessComponent implements OnInit {
+export class GuessComponent implements OnInit, OnChanges {
   movieControl: FormControl;
   @Input() movie: Movie;
-  @Input() enabled: EventEmitter<boolean>;
+  @Input() enabled: boolean;
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
@@ -22,7 +22,20 @@ export class GuessComponent implements OnInit {
       this.valueChanged.emit(value);
     });
 
-    this.enabled.subscribe(isEnabled => isEnabled ? this.enable() : this.disable());
+    this.enable();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const { enabled } = changes;
+    if (enabled.firstChange) {
+      return;
+    }
+
+    if (changes.enabled.currentValue) {
+      this.enable();
+    } else {
+      this.disable();
+    }
   }
 
   private enable() {

@@ -1,8 +1,8 @@
-<StackLayout gtmExplode [shouldExplode]="endGame" #game>
+<StackLayout gtmExplode [shouldExplode]="endGame">
   <gtm-hint [movie]="movie"></gtm-hint>
   <gtm-guess
     [movie]="movie"
-    [enabled]="guesserEnabled"
+    [enabled]="!guessed"
     (valueChanged)="checkIfGuessed($event)"
   ></gtm-guess>
 

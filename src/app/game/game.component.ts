@@ -11,7 +11,6 @@ export class GameComponent implements OnInit {
   @Output() endGame = new EventEmitter();
   movie: Movie;
   guessed: boolean;
-  guesserEnabled = new EventEmitter<boolean>();
   private currentIndex: number;
 
   private static sanitize(text: string) {
@@ -29,7 +28,7 @@ export class GameComponent implements OnInit {
     const expected = GameComponent.sanitize(this.movie.title);
 
     if (actual === expected) {
-      this.updateGuessed(true);
+      this.guessed = true;
     }
   }
 
@@ -42,20 +41,13 @@ export class GameComponent implements OnInit {
   }
 
   private updateMovie(index = this.currentIndex + 1) {
-    this.updateGuessed(false);
 
     if (index === this.movies.length) {
       this.endGame.emit();
     } else {
       this.movie = this.movies[index];
       this.currentIndex = index;
+      this.guessed = false;
     }
-  }
-
-  private updateGuessed(isGuessed: boolean) {
-    this.guessed = isGuessed;
-
-    const gameActive = !isGuessed;
-    this.guesserEnabled.emit(gameActive);
   }
 }
