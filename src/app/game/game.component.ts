@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MovieService } from '../movie.service';
 import { Movie } from '../movie';
 
 @Component({
@@ -7,28 +8,29 @@ import { Movie } from '../movie';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-  @Input() movies: Movie[];
-  @Output() endGame = new EventEmitter();
-  movie: Movie;
-  guessed: boolean;
-  private currentIndex: number;
+  private movies: Movie[];
+  private currentMovieIndex: number;
+  title = "Guess the movie!";
+  currentMovie: Movie;
+  currentMovieGuessed: boolean;
+  finished: boolean;
 
   private static sanitize(text: string) {
     return text.replace(/[^\w]/gi, '').toLowerCase();
   }
 
-  constructor() { }
+  constructor(private movieService: MovieService) { }
 
   ngOnInit() {
-    this.loadFirstMovie();
+    this.loadMovies();
   }
 
   checkIfGuessed(value: string) {
     const actual = GameComponent.sanitize(value);
-    const expected = GameComponent.sanitize(this.movie.title);
+    const expected = GameComponent.sanitize(this.currentMovie.title);
 
     if (actual === expected) {
-      this.guessed = true;
+      this.currentMovieGuessed = true;
     }
   }
 
@@ -40,14 +42,20 @@ export class GameComponent implements OnInit {
     this.updateMovie(0);
   }
 
-  private updateMovie(index = this.currentIndex + 1) {
+  private loadMovies() {
+    this.movieService.getAll().subscribe(movies => {
+      this.movies = movies;
+      this.loadFirstMovie();
+    });
+  }
 
+  private updateMovie(index = this.currentMovieIndex + 1) {
     if (index === this.movies.length) {
-      this.endGame.emit();
+      this.finished = true;
     } else {
-      this.movie = this.movies[index];
-      this.currentIndex = index;
-      this.guessed = false;
+      this.currentMovie = this.movies[index];
+      this.currentMovieIndex = index;
+      this.currentMovieGuessed = false;
     }
   }
 }

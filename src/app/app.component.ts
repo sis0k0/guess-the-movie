@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MovieService } from './movie.service';
+import { Component } from '@angular/core';
 
 import { Movie } from './movie';
 
@@ -8,26 +7,4 @@ import { Movie } from './movie';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-
-  title = 'Guess the movie!';
-  finished: boolean;
-  movies: Movie[];
-
-  constructor(private movieService: MovieService) {
-  }
-
-  ngOnInit() {
-    this.loadMovies();
-  }
-
-  endGame() {
-    this.finished = true;
-  }
-
-  private loadMovies() {
-    this.movieService.getAll().subscribe(movies => {
-      this.movies = movies;
-    });
-  }
-}
+export class AppComponent { }

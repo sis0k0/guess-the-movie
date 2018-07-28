@@ -1,11 +1,20 @@
-<gtm-hint [movie]="movie"></gtm-hint>
-<gtm-guess
-  [movie]="movie"
-  [enabled]="!guessed"
-  (valueChanged)="checkIfGuessed($event)"
-></gtm-guess>
+<div *ngIf="finished; else game">
+  <gtm-credits></gtm-credits>
+</div>
 
-<div *ngIf="guessed">
-  <h3 class="accent">Great job! The movie is <b>{{ movie.title }}</b>.</h3>
+<ng-template #game>
+  <h1 class="mat-display-2">{{ title }}</h1>
+
+  <gtm-hint [movie]="currentMovie"></gtm-hint>
+  <gtm-guess
+    [movie]="currentMovie"
+    [enabled]="!currentMovieGuessed"
+    (valueChanged)="checkIfGuessed($event)"
+  ></gtm-guess>
+
+<div *ngIf="currentMovieGuessed">
+  <h3 class="accent">Great job! The movie is <b>{{ currentMovie.title }}</b>.</h3>
   <button mat-raised-button (click)="loadNextMovie()" color="accent">Next</button>
 </div>
+</ng-template>
+

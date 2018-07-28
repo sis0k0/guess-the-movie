@@ -1,8 +1,1 @@
-<ng-template #game>
-  <h1 class="mat-display-2">{{ title }}</h1>
-  <gtm-game [movies]="movies" (endGame)="endGame()"></gtm-game>
-</ng-template>
-
-<div *ngIf="finished; else game">
-  <gtm-credits></gtm-credits>
-</div>
+<router-outlet></router-outlet>
