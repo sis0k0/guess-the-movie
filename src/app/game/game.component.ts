@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { MovieService } from '../movie.service';
 import { Movie } from '../movie';
 
@@ -14,6 +16,7 @@ export class GameComponent implements OnInit {
   currentMovie: Movie;
   currentMovieGuessed: boolean;
   finished: boolean;
+  gameEnded = new Subject<void>();
 
   private static sanitize(text: string) {
     return text.replace(/[^\w]/gi, '').toLowerCase();
@@ -51,11 +54,16 @@ export class GameComponent implements OnInit {
 
   private updateMovie(index = this.currentMovieIndex + 1) {
     if (index === this.movies.length) {
-      this.finished = true;
+      this.endGame();
     } else {
       this.currentMovie = this.movies[index];
       this.currentMovieIndex = index;
       this.currentMovieGuessed = false;
     }
+  }
+
+  private endGame() {
+    this.gameEnded.next();
+    this.finished = true;
   }
 }

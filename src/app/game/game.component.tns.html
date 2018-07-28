@@ -1,14 +1,26 @@
-<StackLayout gtmExplode [shouldExplode]="endGame">
-  <gtm-hint [movie]="movie"></gtm-hint>
-  <gtm-guess
-    [movie]="movie"
-    [enabled]="!guessed"
-    (valueChanged)="checkIfGuessed($event)"
-  ></gtm-guess>
+<ActionBar [title]="title"></ActionBar>
 
-  <StackLayout *ngIf="guessed">
-    <Label class="text-center" text="Yay! Correct!"></Label>
-    <Label class="text-center text-primary font-weight-bold" [text]="movie.title"></Label>
-    <Button (tap)="loadNextMovie()" class="btn-outline btn-rounded m-15" text="Next"></Button>
-  </StackLayout>
+<StackLayout *ngIf="finished; else game">
+  <gtm-credits></gtm-credits>
 </StackLayout>
+
+<ng-template #game>
+  <StackLayout class="m-15"
+    gtmExplode [boom]="gameEnded"
+  >
+
+    <gtm-hint [movie]="currentMovie"></gtm-hint>
+    <gtm-guess
+      [movie]="currentMovie"
+      [enabled]="!currentMovieGuessed"
+      (valueChanged)="checkIfGuessed($event)"
+    ></gtm-guess>
+
+    <StackLayout *ngIf="currentMovieGuessed">
+      <Label class="text-center" text="Yay! Correct!"></Label>
+      <Label class="text-center text-primary font-weight-bold" [text]="currentMovie.title"></Label>
+      <Button (tap)="loadNextMovie()" class="btn-outline btn-rounded m-15" text="Next"></Button>
+    </StackLayout>
+  </StackLayout>
+
+</ng-template>

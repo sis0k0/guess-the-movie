@@ -5,6 +5,7 @@ import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { Gif } from 'nativescript-gif';
 
+import { AppRoutingModule } from './app-routing.module.tns';
 import { AppComponent } from './app.component';
 import { CreditsComponent } from './credits/credits.component';
 import { GameComponent } from './game/game.component';
@@ -25,6 +26,7 @@ registerElement('Gif', () => Gif);
     NativeScriptModule,
     NativeScriptFormsModule,
     ReactiveFormsModule,
+    AppRoutingModule,
   ],
   declarations: [
     AppComponent,

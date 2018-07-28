@@ -1,25 +1,29 @@
 import {
   Directive,
-  ElementRef,
   EventEmitter,
+  ElementRef,
   Input,
-  OnInit
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
+import { Subject } from 'rxjs';
 
-import { explode } from 'nativescript-explosionfield';
+import { explode as nsExplode } from 'nativescript-explosionfield';
 
 @Directive({
   selector: '[gtmExplode]'
 })
-export class ExplodeDirective implements OnInit {
-  @Input() shouldExplode: EventEmitter<boolean>;
+export class ExplodeDirective {
+  @Input() boom: Subject<boolean>;
 
   constructor(private element: ElementRef) {
   }
 
   ngOnInit() {
-    this.shouldExplode.subscribe(_ =>
-      explode(this.element.nativeElement)
-    );
+    this.boom.subscribe(_ => this.explode());
+  }
+
+  private explode() {
+    nsExplode(this.element.nativeElement);
   }
 }

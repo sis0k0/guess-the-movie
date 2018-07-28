@@ -12,7 +12,7 @@ export class GuessComponent implements OnInit, OnChanges {
   movieControl: FormControl;
   @Input() movie: Movie;
   @Input() enabled: boolean;
-  @Output() valueChanged: EventEmitter<string> = new EventEmitter();
+  @Output() valueChanged = new EventEmitter<string>();
 
   constructor() { }
 
@@ -31,7 +31,7 @@ export class GuessComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (changes.enabled.currentValue) {
+    if (enabled.currentValue === true) {
       this.enable();
     } else {
       this.disable();
