@@ -7,13 +7,28 @@ import { Observable, of } from 'rxjs';
 export class MovieService {
   private movies = [
     {
+      title: 'Guardians of the galaxy',
+      gif: 'assets/groot.gif',
+    },
+
+    {
+      title: 'The Godfather',
+      gif: 'assets/marlon.gif',
+    },
+
+    {
+      title: 'Avatar',
+      gif: 'assets/avatar.gif',
+    },
+
+    {
       title: 'Breakfast at Tiffany\'s',
-      gif: 'https://media1.giphy.com/media/xvLGczTABDig0/giphy.gif',
+      gif: 'assets/tiffanys.gif',
     },
 
     {
       title: 'Eternal sunshine of the spotless mind',
-      gif: 'https://media2.giphy.com/media/FFjKtEurSKfny/giphy.gif',
+      gif: 'assets/eternalsunshine.gif',
     },
 
   ];
