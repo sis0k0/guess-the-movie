@@ -1,7 +1,6 @@
 <ActionBar [title]="title"></ActionBar>
-
-<StackLayout *ngIf="finished; else game">
-  <gtm-credits></gtm-credits>
+<StackLayout *ngIf="!finished; else game">
+  <Image src="https://images.emojiterra.com/mozilla/512px/1f389.png"></Image>
 </StackLayout>
 
 <ng-template #game>
@@ -9,12 +8,11 @@
     gtmExplode [boom]="gameEnded"
   >
 
-    <gtm-hint [movie]="currentMovie"></gtm-hint>
-    <gtm-guess
-      [movie]="currentMovie"
-      [enabled]="!currentMovieGuessed"
-      (valueChanged)="checkIfGuessed($event)"
-    ></gtm-guess>
+    <Gif [src]="currentMovie.gif" height="200"></Gif>
+    <StackLayout class="form m-15">
+      <TextField [formControl]="guessControl" hint="Movie title" text=""></TextField>
+    </StackLayout>
+
 
     <StackLayout *ngIf="currentMovieGuessed">
       <Label class="text-center" text="Yay! Correct!"></Label>

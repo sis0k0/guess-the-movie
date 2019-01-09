@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 import { MovieService } from '../movie.service';
 import { Movie } from '../movie';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'gtm-game',
@@ -10,13 +10,13 @@ import { Movie } from '../movie';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  private guessControl: FormControl;
   private movies: Movie[];
   private currentMovieIndex: number;
-  title = "Guess the movie!";
+  title = 'Guess the movie!';
   currentMovie: Movie;
-  currentMovieGuessed: boolean;
-  finished: boolean;
-  gameEnded = new Subject<void>();
+  currentMovieGuessed = false;
+  finished = false;
 
   private static sanitize(text: string) {
     return text.replace(/[^\w]/gi, '').toLowerCase();
@@ -25,6 +25,10 @@ export class GameComponent implements OnInit {
   constructor(private movieService: MovieService) { }
 
   ngOnInit() {
+    this.guessControl = new FormControl();
+    this.guessControl.valueChanges.subscribe(value => {
+      this.checkIfGuessed(value);
+    });
     this.loadMovies();
   }
 
@@ -33,7 +37,7 @@ export class GameComponent implements OnInit {
     const expected = GameComponent.sanitize(this.currentMovie.title);
 
     if (actual === expected) {
-      this.currentMovieGuessed = true;
+      this.disableGuesser();
     }
   }
 
@@ -58,12 +62,27 @@ export class GameComponent implements OnInit {
     } else {
       this.currentMovie = this.movies[index];
       this.currentMovieIndex = index;
-      this.currentMovieGuessed = false;
+      this.enableGuesser();
     }
   }
 
   private endGame() {
-    this.gameEnded.next();
     this.finished = true;
+  }
+
+  private enableGuesser() {
+    this.reset();
+    this.guessControl.enable();
+    this.currentMovieGuessed = false;
+  }
+
+  private disableGuesser() {
+    this.reset();
+    this.guessControl.disable();
+    this.currentMovieGuessed = true;
+  }
+
+  private reset() {
+    this.guessControl.setValue('');
   }
 }
