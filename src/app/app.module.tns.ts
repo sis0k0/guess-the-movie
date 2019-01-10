@@ -8,7 +8,6 @@ import { Gif } from 'nativescript-gif';
 import { AppRoutingModule } from './app-routing.module.tns';
 import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
-import { ExplodeDirective } from './explode.directive';
 
 registerElement('Gif', () => Gif);
 
@@ -28,7 +27,6 @@ registerElement('Gif', () => Gif);
   declarations: [
     AppComponent,
     GameComponent,
-    ExplodeDirective,
   ],
   providers: [
   ],

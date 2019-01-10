@@ -28,7 +28,6 @@
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "nativescript-angular": "^7.1.0",
-    "nativescript-explosionfield": "file:nativescript-explosionfield.tgz",
     "nativescript-gif": "^4.0.1",
     "nativescript-theme-core": "~1.0.4",
     "reflect-metadata": "~0.1.8",

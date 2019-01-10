@@ -17,5 +17,12 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+  "exclude": [
+    "**/*.tns.ts",
+    "**/*.android.ts",
+    "**/*.ios.ts",
+    "**/*.spec.ts",
+    "src/test.ts"
+  ]
 }
