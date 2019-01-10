@@ -10,9 +10,9 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-  private guessControl: FormControl;
   private movies: Movie[];
   private currentMovieIndex: number;
+  guessControl: FormControl;
   title = 'Guess the movie!';
   currentMovie: Movie;
   currentMovieGuessed = false;

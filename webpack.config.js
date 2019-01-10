@@ -1,8 +1,11 @@
-const { join, relative, resolve, sep } = require("path");
+const { join, relative, resolve, sep, dirname } = require("path");
 
 const webpack = require("webpack");
 const nsWebpack = require("nativescript-dev-webpack");
 const nativescriptTarget = require("nativescript-dev-webpack/nativescript-target");
+const { nsReplaceBootstrap } = require("nativescript-dev-webpack/transformers/ns-replace-bootstrap");
+const { nsReplaceLazyLoader } = require("nativescript-dev-webpack/transformers/ns-replace-lazy-loader");
+const { getMainModulePath } = require("nativescript-dev-webpack/utils/ast-utils");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
@@ -32,8 +35,8 @@ module.exports = env => {
         // The 'appPath' and 'appResourcesPath' values are fetched from
         // the nsconfig.json configuration file
         // when bundling with `tns run android|ios --bundle`.
-        appPath = "app",
-        appResourcesPath = "app/App_Resources",
+        appPath = "src",
+        appResourcesPath = "App_Resources",
 
         // You can provide the following flags when running 'tns run android|ios'
         aot, // --env.aot
@@ -41,19 +44,52 @@ module.exports = env => {
         uglify, // --env.uglify
         report, // --env.report
         sourceMap, // --env.sourceMap
+        hmr, // --env.hmr,
     } = env;
+    env.externals = env.externals || [];
+    const externals = (env.externals).map((e) => { // --env.externals
+        return new RegExp(e + ".*");
+    });
 
     const appFullPath = resolve(projectRoot, appPath);
     const appResourcesFullPath = resolve(projectRoot, appResourcesPath);
 
-    const entryModule = aot ?
-        nsWebpack.getAotEntryModule(appFullPath) : 
-        `${nsWebpack.getEntryModule(appFullPath)}.ts`;
+    const entryModule = `${nsWebpack.getEntryModule(appFullPath)}.ts`;
     const entryPath = `.${sep}${entryModule}`;
+    const ngCompilerTransformers = [];
+    const additionalLazyModuleResources = [];
+    if (aot) {
+        ngCompilerTransformers.push(nsReplaceBootstrap);
+    }
+
+    // when "@angular/core" is external, it's not included in the bundles. In this way, it will be used
+    // directly from node_modules and the Angular modules loader won't be able to resolve the lazy routes
+    // fixes https://github.com/NativeScript/nativescript-cli/issues/4024
+    if (env.externals.indexOf("@angular/core") > -1) {
+        const appModuleRelativePath = getMainModulePath(resolve(appFullPath, entryModule));
+        if (appModuleRelativePath) {
+            const appModuleFolderPath = dirname(resolve(appFullPath, appModuleRelativePath));
+            // include the lazy loader inside app module
+            ngCompilerTransformers.push(nsReplaceLazyLoader);
+            // include the new lazy loader path in the allowed ones
+            additionalLazyModuleResources.push(appModuleFolderPath);
+        }
+    }
+
+    const ngCompilerPlugin = new AngularCompilerPlugin({
+        hostReplacementPaths: nsWebpack.getResolver([platform, "tns"]),
+        platformTransformers: ngCompilerTransformers.map(t => t(() => ngCompilerPlugin)),
+        mainPath: resolve(appPath, entryModule),
+        tsConfigPath: join(__dirname, "tsconfig.tns.json"),
+        skipCodeGeneration: !aot,
+        sourceMap: !!sourceMap,
+        additionalLazyModuleResources: additionalLazyModuleResources
+    });
 
     const config = {
         mode: uglify ? "production" : "development",
         context: appFullPath,
+        externals,
         watchOptions: {
             ignored: [
                 appResourcesFullPath,
@@ -107,7 +143,7 @@ module.exports = env => {
                         test: (module, chunks) => {
                             const moduleName = module.nameForCondition ? module.nameForCondition() : '';
                             return /[\\/]node_modules[\\/]/.test(moduleName) ||
-                                    appComponents.some(comp => comp === moduleName);
+                                appComponents.some(comp => comp === moduleName);
                         },
                         enforce: true,
                     },
@@ -116,9 +152,9 @@ module.exports = env => {
             minimize: !!uglify,
             minimizer: [
                 new UglifyJsPlugin({
+                    parallel: true,
+                    cache: true,
                     uglifyOptions: {
-                        parallel: true,
-                        cache: true,
                         output: {
                             comments: false,
                         },
@@ -177,8 +213,10 @@ module.exports = env => {
 
                 // Compile TypeScript files with ahead-of-time compiler.
                 {
-                    test: /.ts$/, use: [
+                    test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+                    use: [
                         "nativescript-dev-webpack/moduleid-compat-loader",
+                        "nativescript-dev-webpack/lazy-ngmodule-hot-loader",
                         "@ngtools/webpack",
                     ]
                 },
@@ -195,9 +233,10 @@ module.exports = env => {
             // Define useful constants like TNS_WEBPACK
             new webpack.DefinePlugin({
                 "global.TNS_WEBPACK": "true",
+                "process": undefined,
             }),
             // Remove all files from the out dir.
-            new CleanWebpackPlugin([ `${dist}/**/*` ]),
+            new CleanWebpackPlugin([`${dist}/**/*`]),
             // Copy native app resources to out dir.
             new CopyWebpackPlugin([
                 {
@@ -208,9 +247,9 @@ module.exports = env => {
             ]),
             // Copy assets to out dir. Add your own globs as needed.
             new CopyWebpackPlugin([
-                { from: "assets/**" },
-                { from: "**/*.jpg" },
-                { from: "**/*.png" },
+                { from: { glob: "assets/**" } },
+                { from: { glob: "**/*.jpg" } },
+                { from: { glob: "**/*.png" } },
             ], { ignore: [`${relative(appPath, appResourcesFullPath)}/**`] }),
             // Generate a bundle starter script and activate it in package.json
             new nsWebpack.GenerateBundleStarterPlugin([
@@ -220,14 +259,7 @@ module.exports = env => {
             // For instructions on how to set up workers with webpack
             // check out https://github.com/nativescript/worker-loader
             new NativeScriptWorkerPlugin(),
-
-            new AngularCompilerPlugin({
-                hostReplacementPaths: nsWebpack.getResolver([platform, "tns"]),
-                entryModule: resolve(appPath, "./app/app.module#AppModule"),
-                tsConfigPath: join(__dirname, aot ? "tsconfig.aot.json" : "tsconfig.tns.json"),
-                skipCodeGeneration: !aot,
-                sourceMap: !!sourceMap,
-            }),
+            ngCompilerPlugin,
             // Does IPC communication with the {N} CLI to notify events when running in watch mode.
             new nsWebpack.WatchStateLoggerPlugin(),
         ],
@@ -260,6 +292,10 @@ module.exports = env => {
             projectRoot,
             webpackConfig: config,
         }));
+    }
+
+    if (hmr) {
+        config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }
 
     return config;
