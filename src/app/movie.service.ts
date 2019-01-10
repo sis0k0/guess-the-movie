@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { Movie } from './movie';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private movies = [
+  private movies: Movie[] = [
     {
       title: 'Guardians of the galaxy',
       gif: 'assets/groot.gif',
@@ -33,7 +34,7 @@ export class MovieService {
 
   ];
 
-  getAll(): Observable<any> {
+  getAll(): Observable<Movie[]> {
     return of(this.movies);
   }
 }

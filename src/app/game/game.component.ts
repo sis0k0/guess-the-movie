@@ -50,7 +50,7 @@ export class GameComponent implements OnInit {
   }
 
   private loadMovies() {
-    this.movieService.getAll().subscribe(movies => {
+    this.movieService.getAll().subscribe((movies: Movie[]) => {
       this.movies = movies;
       this.loadFirstMovie();
     });

@@ -60,6 +60,9 @@
     "nativescript-dev-webpack": "^0.17.0"
   },
   "nativescript": {
-    "id": "org.nativescript.ngsample"
+    "id": "org.nativescript.ngsample",
+    "tns-android": {
+      "version": "5.1.0"
+    }
   }
 }
