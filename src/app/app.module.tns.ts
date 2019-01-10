@@ -7,10 +7,7 @@ import { Gif } from 'nativescript-gif';
 
 import { AppRoutingModule } from './app-routing.module.tns';
 import { AppComponent } from './app.component';
-import { CreditsComponent } from './credits/credits.component';
 import { GameComponent } from './game/game.component';
-import { GuessComponent } from './guess/guess.component';
-import { HintComponent } from './hint/hint.component';
 import { ExplodeDirective } from './explode.directive';
 
 registerElement('Gif', () => Gif);
@@ -30,10 +27,7 @@ registerElement('Gif', () => Gif);
   ],
   declarations: [
     AppComponent,
-    CreditsComponent,
     GameComponent,
-    GuessComponent,
-    HintComponent,
     ExplodeDirective,
   ],
   providers: [

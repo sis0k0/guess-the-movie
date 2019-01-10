@@ -14,11 +14,6 @@
       <input [formControl]="guessControl" autofocus matInput placeholder="Movie title">
     </mat-form-field>
   </form>
-  <gtm-guess
-    [movie]="currentMovie"
-    [enabled]="!currentMovieGuessed"
-    (valueChanged)="checkIfGuessed($event)"
-  ></gtm-guess>
 
 <div *ngIf="currentMovieGuessed">
   <h3 class="accent">Great job! The movie is <b>{{ currentMovie.title }}</b>.</h3>

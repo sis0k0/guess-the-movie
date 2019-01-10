@@ -9,17 +9,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HintComponent } from './hint/hint.component';
-import { GuessComponent } from './guess/guess.component';
-import { CreditsComponent } from './credits/credits.component';
 import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HintComponent,
-    GuessComponent,
-    CreditsComponent,
     GameComponent,
   ],
   imports: [
