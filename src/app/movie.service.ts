@@ -8,28 +8,28 @@ import { Movie } from './movie';
 export class MovieService {
   private movies: Movie[] = [
     {
-      title: 'Guardians of the galaxy',
-      gif: 'assets/groot.gif',
+      title: 'Hidden figures',
+      gif: 'assets/hidden-figures.gif',
     },
 
     {
-      title: 'The Godfather',
-      gif: 'assets/marlon.gif',
+      title: 'Colette',
+      gif: 'assets/colette.gif',
     },
 
     {
-      title: 'Avatar',
-      gif: 'assets/avatar.gif',
+      title: 'Bandersnatch',
+      gif: 'assets/bandersnatch.gif',
     },
 
     {
-      title: 'Breakfast at Tiffany\'s',
-      gif: 'assets/tiffanys.gif',
+      title: 'Driving Miss Daisy',
+      gif: 'assets/miss-daisy.gif',
     },
 
     {
-      title: 'Eternal sunshine of the spotless mind',
-      gif: 'assets/eternalsunshine.gif',
+      title: 'Fried Green Tomatoes',
+      gif: 'assets/towanda.gif',
     },
 
   ];
