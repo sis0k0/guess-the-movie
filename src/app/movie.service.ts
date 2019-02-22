@@ -7,31 +7,31 @@ import { Movie } from './movie';
 })
 export class MovieService {
   private movies: Movie[] = [
+
     {
-      title: 'Hidden figures',
-      gif: 'assets/hidden-figures.gif',
+      title: 'Guardians of the galaxy',
+      gif: 'assets/groot.gif',
     },
 
     {
-      title: 'Colette',
-      gif: 'assets/colette.gif',
+      title: 'The Godfather',
+      gif: 'assets/marlon.gif',
+    },
+
+    {
+      title: 'Avatar',
+      gif: 'assets/avatar.gif',
+    },
+
+    {
+      title: 'Eternal sunshine of the spotless mind',
+      gif: 'assets/eternalsunshine.gif',
     },
 
     {
       title: 'Bandersnatch',
       gif: 'assets/bandersnatch.gif',
     },
-
-    {
-      title: 'Driving Miss Daisy',
-      gif: 'assets/miss-daisy.gif',
-    },
-
-    {
-      title: 'Fried Green Tomatoes',
-      gif: 'assets/towanda.gif',
-    },
-
   ];
 
   getAll(): Observable<Movie[]> {
